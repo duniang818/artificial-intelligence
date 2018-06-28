@@ -72,15 +72,25 @@ class CustomPlayer(BasePlayer):
         opp_liberties = state.liberties(opp_loc)
         opp_relatives = list()
 
-        if len(own_liberties) >= 2:
-            for opp in opp_liberties:
-                opp_relatives.append(opp - opp_loc)
-            for own in own_liberties:
-                own_relatives.append(own - opp_loc)
-            if set(opp_relatives).intersection(own_liberties) in None:  # 有交集表示在同一个方向
-                return own_liberties
+        # legal_move = list()
+        if len(own_liberties) and len(opp_liberties) >= 2:
+            inters = set(opp_liberties).intersection(own_liberties)
+
+            if len(inters) > 1:
+                # legal_move = max(inters, key=lambda x: state.result(x))
+                return len(inters)
+            elif len(inters) == 1:
+                return 1
+                # legal_move = own_liberties.append(inters)
+                # legal_move = max(own_liberties, key=lambda x: state.result(x))
             else:
-                return set(own_liberties).intersection(set(opp_liberties))
+                # legal_move = max(own_liberties, key=lambda x: state.result(x))
+                # legal_move = own_liberties
+                return len(own_liberties)
+        else:
+                return len(own_liberties)
+
+        # return len(legal_move)
 
     def get_action(self, state):
         """ Employ an adversarial search technique to choose an action
@@ -115,5 +125,5 @@ class CustomPlayer(BasePlayer):
             opp_liberties = state.liberties(opp_loc)
             self.queue.put(max(opp_liberties, key=lambda x: len(state.result(x))))
         else:  # other common moves
-            # self.queue.put(max(state.actions(), key=lambda x: self.score(state.result(x))))
-            self.queue.put(self.score(state))
+            self.queue.put(max(state.actions(), key=lambda x: self.score(state.result(x))))
+            # self.queue.put(self.score(state))
