@@ -21,6 +21,7 @@ class CustomPlayer(BasePlayer):
       suitable for using any other machine learning techniques.
     **********************************************************************
     """
+
     def __init__(self, player_id):
         super().__init__(player_id)
 
@@ -58,39 +59,28 @@ class CustomPlayer(BasePlayer):
         # print("第2象限元素:", f, g, h, i)
         self.quadrant['II'] = [f, g, h, i]
 
-        self.relative_loc = dict()
-        self.relative_loc['I'] = [25, 11]
-        self.relative_loc['II'] = [27, 15]
-        self.relative_loc['III'] = [-11, -25]
-        self.relative_loc['IV'] = [-27, -15]
-
     def score(self, state):
         own_loc = state.locs[self.player_id]
-        own_relatives = list()
         own_liberties = state.liberties(own_loc)
         opp_loc = state.locs[1 - self.player_id]
         opp_liberties = state.liberties(opp_loc)
-        opp_relatives = list()
 
-        # legal_move = list()
-        if len(own_liberties) and len(opp_liberties) >= 2:
-            inters = set(opp_liberties).intersection(own_liberties)
+        actions = []
+        score = 0
+        # 相当于判断互斥性，不在同一象限
+        for own in own_liberties:
+            if (own_loc in self.quadrant['I'] \
+                and own in self.quadrant['I']) or \
+                    (own_loc in self.quadrant['II']  \
+                     and own in self.quadrant['II']) or \
+                    (own_loc in self.quadrant['III'] \
+                     and own in self.quadrant['III']) or \
+                    (own_loc in self.quadrant['IV'] \
+                     and own in self.quadrant['IV']):
+                score += 1
+                actions.append(own)
 
-            if len(inters) > 1:
-                # legal_move = max(inters, key=lambda x: state.result(x))
-                return len(inters)
-            elif len(inters) == 1:
-                return 1
-                # legal_move = own_liberties.append(inters)
-                # legal_move = max(own_liberties, key=lambda x: state.result(x))
-            else:
-                # legal_move = max(own_liberties, key=lambda x: state.result(x))
-                # legal_move = own_liberties
-                return len(own_liberties)
-        else:
-                return len(own_liberties)
-
-        # return len(legal_move)
+        return len(own_liberties) + score
 
     def get_action(self, state):
         """ Employ an adversarial search technique to choose an action
@@ -115,7 +105,7 @@ class CustomPlayer(BasePlayer):
         # EXAMPLE: choose a random move without any search--this function MUST
         #          call self.queue.put(ACTION) at least once before time expires
         #          (the timer is automatically managed for you)
-        # import random
+        import random
         # self.queue.put(random.choice(state.actions()))
 
         if state.ply_count == 0:  # I am the first player
@@ -126,4 +116,3 @@ class CustomPlayer(BasePlayer):
             self.queue.put(max(opp_liberties, key=lambda x: len(state.result(x))))
         else:  # other common moves
             self.queue.put(max(state.actions(), key=lambda x: self.score(state.result(x))))
-            # self.queue.put(self.score(state))

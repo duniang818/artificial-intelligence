@@ -3,7 +3,7 @@ from udacity_pa import udacity
 
 nanodegree = 'nd898'
 projects = ['adversarial_search']
-filenames_all = ['my_custom_player.py', 'report.pdf', 'data.pickle']
+filenames_all = ['my_custom_playe_1r.py', 'report.pdf', 'data.pickle']
 
 def submit(args):
     filenames = []
@@ -11,9 +11,9 @@ def submit(args):
         if os.path.isfile(filename):
             filenames.append(filename)
 
-    if 'my_custom_player.py' not in filenames:
+    if 'my_custom_playe_1r.py' not in filenames:
         raise RuntimeError(
-            "The file 'my_custom_player.py' was not found in your current directory. This " +
+            "The file 'my_custom_playe_1r.py' was not found in your current directory. This " +
             "file MUST be included in every PA submission.")
     if 'report.pdf' not in filenames:
         print(
