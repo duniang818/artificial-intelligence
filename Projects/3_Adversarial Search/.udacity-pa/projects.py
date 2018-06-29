@@ -3,7 +3,7 @@ from udacity_pa import udacity
 
 nanodegree = 'nd898'
 projects = ['adversarial_search']
-filenames_all = ['my_custom_playe_1r.py', 'report.pdf', 'data.pickle']
+filenames_all = ['my_custom_player.py', 'report.pdf', 'data.pickle']
 
 def submit(args):
     filenames = []

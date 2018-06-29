@@ -6,6 +6,7 @@ import logging
 import math
 import os
 import random
+import time
 import textwrap
 
 from collections import namedtuple
@@ -104,6 +105,7 @@ def play_matches(custom_agent, test_agent, cli_args):
 
 
 def main(args):
+    start = time.time()
     test_agent = TEST_AGENTS[args.opponent.upper()]
     custom_agent = Agent(CustomPlayer, "Custom Agent")
     wins, num_games = play_matches(custom_agent, test_agent, args)
@@ -112,7 +114,8 @@ def main(args):
        100. * wins / num_games, test_agent.name))
     print("Your agent won {:.1f}% of matches against {}".format(
        100. * wins / num_games, test_agent.name))
-    print()
+    end = time.time()
+    print("total time:{}".format(end-start))
 
 
 if __name__ == "__main__":
@@ -142,7 +145,7 @@ if __name__ == "__main__":
         """
     )
     parser.add_argument(
-        '-f', '--fair_matches', action="store_true",
+        '-f', '--fair_matches', action="store_false",
         help="""\
             Run 'fair' matches to mitigate differences caused by opening position 
             (useful for analyzing heuristic performance).  Setting this flag doubles 

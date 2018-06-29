@@ -105,8 +105,6 @@ class CustomPlayer(BasePlayer):
         # EXAMPLE: choose a random move without any search--this function MUST
         #          call self.queue.put(ACTION) at least once before time expires
         #          (the timer is automatically managed for you)
-        import random
-        # self.queue.put(random.choice(state.actions()))
 
         if state.ply_count == 0:  # I am the first player
             self.queue.put(57)

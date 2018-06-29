@@ -55,7 +55,6 @@ class GreedyPlayer(BasePlayer):
     def score(self, state):
         own_loc = state.locs[self.player_id]
         own_liberties = state.liberties(own_loc)
-        print("====type:{}".format(type(own_liberties)))
         return len(own_liberties)
 
     def get_action(self, state):
